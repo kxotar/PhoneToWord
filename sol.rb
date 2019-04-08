@@ -10,12 +10,20 @@ class PhoneToWord
 		    8 => %w(t u v),
 		    9 => %w(w x y z)
 		}
-	end	
+	end
+
+	def read_data(dict_file= 'dictionary.txt')
+		raise "Couldn't Find the File #{dict_file}" unless File::exists?(dict_file)
+		File.readlines(dict_file) 	
+	end
 end
 
-
-
-
+begin
+	@obj = PhoneToWord.new
+	puts @obj.read_data.first
+rescue StandardError => e 
+	puts e.message
+end
 
 
 require "minitest/autorun"
@@ -41,3 +49,20 @@ describe "create_mapping function" do
     value(@obj.create_mapping[9]).must_equal ['w','x','y','z']
   end 
 end
+
+describe "read_data function" do
+	before do
+		@obj = PhoneToWord.new
+	end
+
+	it "throw an exception if dictionary file does not exist" do
+		assert_raises do
+			@obj.read_data('dist.txt').first
+		end
+	end
+
+	it "return dictionary data if dictionary exist" do
+		refute_nil(@obj.read_data)
+	end
+
+end 
