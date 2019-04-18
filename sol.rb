@@ -35,7 +35,7 @@ class PhoneToWord
 		phone.each_char do |ch|
 			combinations<< create_mapping[ch.to_i]
 		end
-		combinations.flatten.combination(word_len).map(&:join)
+		combinations.flatten.compact.combination(word_len).map(&:join)
 	end
 
 	def matching_words
@@ -124,7 +124,30 @@ describe "word_exists function" do
 		@obj = PhoneToWord.new
 	end
 
-	it "" do
+	it "returns the word if exists in data source" do
+		result = @obj.word_exists("AA", ["AA", "AC", "AD"])
+		assert_equal result, "AA"
+	end
+
+	it "returns nil if word does not exist in data source" do
+		result = @obj.word_exists("AZ", ["AA", "AC", "AD"])
+		assert_nil result
+	end
+end
+
+describe "word_combinations function" do
+	before do
+		@obj = PhoneToWord.new
+	end
+
+	it "return the array of combinations for entered number" do
+		result = @obj.word_combinations("12")
+		assert_kind_of Array, result
+	end
+
+	it "return the blank aaray for number composed if 0 and 1" do
+		result = @obj.word_combinations("10101")
+		assert_predicate result, :empty?
 	end
 end
 
