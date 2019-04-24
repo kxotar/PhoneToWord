@@ -9,6 +9,7 @@ class PhoneToWord
 	end
 
 	def matching_words
+		raise "Phone should be atleast 3 characters long" if @phone.size < 3
 		p = []
 		word_combinations.each do |comb|
 			p<< search_word(comb)

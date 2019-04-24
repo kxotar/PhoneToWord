@@ -102,16 +102,24 @@ end
 
 describe "matching_words" do
     before do
-        @obj = PhoneToWord.new('22', ["AA", "AC", "AD", "AMD","APC"],2)
+        @obj1= PhoneToWord.new('244', ["AHI", "BIG", "GHI", "AMD","APC"],3)
+        @obj2= PhoneToWord.new(phone: "2445555467",word_length: 10)
     end
 
     it "return the list of match words from data source" do
-        result= @obj.matching_words
+        result= @obj1.matching_words
         assert_kind_of Array, result
     end
 
     it "return the matching words from data source" do
-        result= @obj.matching_words
-        assert_includes result, "AA"
+        result= @obj1.matching_words
+        assert_includes result, "BIG"
+    end
+
+    it "return the matching words within 1000ms for 10 digit phone number" do
+        t1= Time.now
+        result= @obj2.matching_words
+        t2= Time.now
+        assert (t2-t1)< 1000
     end
 end
